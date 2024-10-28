@@ -438,6 +438,11 @@ impl<T> JoinHandle<T> {
     pub async fn join_async(self) -> Result<T> {
         self.0.join_async().await
     }
+
+    /// Checks if the associated thread has finished running its main function.
+    pub fn is_finished(&self) -> bool {
+        Arc::strong_count(&self.0.packet) == 1
+    }
 }
 
 impl<T> fmt::Debug for JoinHandle<T> {
